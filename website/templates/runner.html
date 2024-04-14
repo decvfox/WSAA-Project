@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block title %}Runner{% endblock %} {% block
+    content %}
+  
+      <h3 align="center">Runners</h3>
+      <div> 
+        <ul class="list-group list-group-flush" id="runners">
+          {% for runner in user.runners %}
+          <li class="list-group-item">
+            <b>Number: </b>{{runner.id}}<br/>          
+            <b>Name: </b>{{runner.name}}<br/>
+            <b>Rider: </b>{{runner.jockey}}<br/>
+            <b>Trainer: </b>{{ runner.trainer}}<br/>     
+          </li> 
+        {% endfor %}
+      </ul>
+
+    </div>  
+      <form method="POST">
+      <div class="form-group">
+        <label for="name">Horse Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Name of horse"
+        />
+      </div>
+      <div class="form-group">
+        <label for="jockey">Jockey</label>
+        <input
+          type="text"
+          class="form-control"
+          id="jockey"
+          name="jockey"
+          placeholder="Enter Jockey name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="trainer">Trainer</label>
+        <input
+          type="text"
+          class="form-control"
+          id="trainer"
+          name="trainer"
+          placeholder="Enter trainer name"
+        />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Add Horse</button>
+    </form>
+    {% endblock %}
+    
