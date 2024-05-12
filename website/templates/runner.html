@@ -9,7 +9,10 @@
             <b>Number: </b>{{runner.id}}<br/>          
             <b>Name: </b>{{runner.name}}<br/>
             <b>Rider: </b>{{runner.jockey}}<br/>
-            <b>Trainer: </b>{{ runner.trainer}}<br/>     
+            <b>Trainer: </b>{{ runner.trainer}}<br/> 
+            <button type="button" class="close" onClick="deleteRunner({{ runner.id }})">
+              <span aria-hidden="true">&times;</span>
+            </button>    
           </li> 
         {% endfor %}
       </ul>

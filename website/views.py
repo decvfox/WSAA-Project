@@ -7,7 +7,7 @@ import json
 views = Blueprint('views', __name__)
 
 
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
     if request.method == 'POST': 
@@ -37,10 +37,9 @@ def delete_note():
 
     return jsonify({})
 
-@views.route('/runner', methods=['GET', 'POST'])
+@views.route('/', methods=['GET', 'POST'])
 @login_required
 def runner():
-    print(current_user)
     if (request.method == 'POST') and current_user.id == 1: 
         name = request.form.get('name')
         jockey = request.form.get('jockey')
@@ -61,3 +60,16 @@ def runner():
             db.session.commit()
             flash('Horse added', category='success')
     return render_template("runner.html", user=current_user)
+
+@views.route('/delete-runner', methods=['POST'])
+def delete_runner():  
+    runner = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
+    runnerId = runner['runnerId']
+    runner = Runner.query.get(runnerId)
+    if runner:
+        if runner.user_id == current_user.id:
+            db.session.delete(runner)
+            db.session.commit()
+    return jsonify({})
+
+
