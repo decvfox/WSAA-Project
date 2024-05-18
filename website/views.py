@@ -1,46 +1,22 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect
 from flask_login import login_required, current_user
-from .models import Note, Runner
+from .models import Runner, User
 from . import db
 import json
 
 views = Blueprint('views', __name__)
 
 
-@views.route('/home', methods=['GET', 'POST'])
-@login_required
+@views.route('/', methods=['GET'])
 def home():
-    if request.method == 'POST': 
-        note = request.form.get('note')#Gets the note from the HTML 
+    users = User.query.order_by(User.id)
+    runners = Runner.query.order_by(Runner.user_id)
+    return render_template("home.html", user=current_user, runners = runners, users = users)
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error') 
-        else:
-            new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-            db.session.add(new_note) #adding the note to the database 
-            db.session.commit()
-            flash('Note added!', category='success')
-
-    return render_template("home.html", user=current_user)
-
-
-
-@views.route('/delete-note', methods=['POST'])
-def delete_note():  
-    note = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
-    noteId = note['noteId']
-    note = Note.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-
-    return jsonify({})
-
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/runner', methods=['GET', 'POST'])
 @login_required
 def runner():
-    if (request.method == 'POST') and current_user.id == 1: 
+    if (request.method == 'POST'): 
         name = request.form.get('name')
         jockey = request.form.get('jockey')
         trainer = request.form.get('trainer')
@@ -72,4 +48,19 @@ def delete_runner():
             db.session.commit()
     return jsonify({})
 
-
+@views.route('/update/<int:id>', methods=['GET', 'POST'])
+@login_required
+def update(id):
+    runner_to_update =  Runner.query.get(id)
+    if (request.method == 'POST') and current_user.id == runner_to_update.user_id:
+        runner_to_update.name = request.form['name']
+        runner_to_update.jockey = request.form['jockey']
+        runner_to_update.trainer = request.form['trainer']
+        db.session.commit()
+        return redirect('/')
+    else:
+        return render_template('update.html', runner_to_update = runner_to_update, user=current_user)
+    
+@views.route('/about', methods=['GET'])
+def about():
+    return render_template("about.html", user=current_user)

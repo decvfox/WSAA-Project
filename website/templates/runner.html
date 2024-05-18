@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Runner{% endblock %} {% block
     content %}
   
-      <h3 align="center">Runners</h3>
+      <h3 align="center">My Racecard</h3>
       <div> 
         <ul class="list-group list-group-flush" id="runners">
           {% for runner in user.runners %}
@@ -10,9 +10,8 @@
             <b>Name: </b>{{runner.name}}<br/>
             <b>Rider: </b>{{runner.jockey}}<br/>
             <b>Trainer: </b>{{ runner.trainer}}<br/> 
-            <button type="button" class="close" onClick="deleteRunner({{ runner.id }})">
-              <span aria-hidden="true">&times;</span>
-            </button>    
+            <a href = "/update/{{ runner.id }}"class="btn btn-outline-secondary btn-sm">Update</a>  
+            <button type="button" class="btn btn-outline-danger btn-sm" onClick="deleteRunner({{ runner.id }})">Delete</button>    
           </li> 
         {% endfor %}
       </ul>
