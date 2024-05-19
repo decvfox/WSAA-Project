@@ -35,7 +35,7 @@ def runner():
             db.session.add(new_horse)
             db.session.commit()
             flash('Horse added', category='success')
-    return render_template("runner.html", user=current_user)
+    return render_template("runner.jinja2", user=current_user)
 
 @views.route('/delete-runner', methods=['POST'])
 def delete_runner():  
