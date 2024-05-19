@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block title %}Update{% endblock %} {% block
+    content %}
+  
+      <h3 align="center">Update Entry</h3>
+
+      <ul class="list-group list-group-flush" id="runners"></ul>
+      <form action = "/update/{{ runner_to_update.id }}" method="POST">
+      <div class="form-group">
+        <label for="name">Horse Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            value = "{{ runner_to_update.name }}"
+          />
+      </div>
+      <div class="form-group">
+        <label for="jockey">Jockey</label>
+          <input
+            type="text"
+            class="form-control"
+            id="jockey"
+            name="jockey"
+            value = "{{ runner_to_update.jockey }}"
+          />
+      </div>
+      <div class="form-group">
+        <label for="trainer">Trainer</label>
+          <input
+            type="text"
+            class="form-control"
+            id="trainer"
+            name="trainer"
+            value = "{{ runner_to_update.trainer }}"
+          />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Update Entry</button>
+    </form>
+    {% endblock %}
